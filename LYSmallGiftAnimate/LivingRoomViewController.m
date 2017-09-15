@@ -15,6 +15,7 @@
 
 @property (strong ,nonatomic) NSMutableArray *comboArray;
 @property (strong ,nonatomic) NSMutableArray *randomPersonArray;
+@property (strong ,nonatomic) NSMutableArray <GatewayGiftIncoming *>*randomModelArray;
 // 礼物
 @property (nonatomic, strong) NSMutableArray *giftQueue; // 收到礼物的队列（按combid分类的二维数组）
 @property (nonatomic, strong) NSArray *giftAnimatedViews; // 礼物动画显示区域
@@ -57,9 +58,9 @@
     GatewayGiftIncoming * giftModel = [[GatewayGiftIncoming alloc] init];
     int combo = [self comboNumberWithButton:sender];//连击数
     giftModel.combo = combo;
-    giftModel.giftId = (int)tag % 3;
-    giftModel.comboId = (int)tag % 3+10;
-    if (tag < 3) {
+    giftModel.giftId = (int)tag % kLYGiftCount;
+    giftModel.comboId = (int)tag % kLYGiftCount+10;
+    if (tag < kLYGiftCount) {
         //自己发的
         giftModel.nickname = @"我";
         giftModel.portrait = @"我";
@@ -78,33 +79,44 @@
     if (!_randomPersonArray) {
         _randomPersonArray =
         @[
-                                       @{@"uid":@1,@"name":@"邓超",@"combo":@[@0,@0,@0].mutableCopy}.mutableCopy,
-                                       @{@"uid":@2,@"name":@"鹿晗",@"combo":@[@0,@0,@0].mutableCopy}.mutableCopy,
+                                       @{@"uid":@0,@"name":@"邓超",@"combo":@[@0,@0,@0].mutableCopy}.mutableCopy,
+                                       @{@"uid":@1,@"name":@"鹿晗",@"combo":@[@0,@0,@0].mutableCopy}.mutableCopy,
                                        ].mutableCopy;
     }
     return _randomPersonArray;
 }
 
-//随机人发送随机礼物
+- (NSMutableArray *)randomModelArray
+{
+    if (!_randomModelArray) {
+        _randomModelArray = [[NSMutableArray alloc]init];
+        NSMutableArray * personArray = self.randomPersonArray;
+        
+        for (int i = 0; i < personArray.count; i++) {
+            int uid = i;  //uid
+            for (int j = 0; j < kLYGiftCount; j++) {
+                int giftId = arc4random() % kLYGiftCount;   //随机礼物id
+                NSString * name = personArray[uid][@"name"];
+                GatewayGiftIncoming * giftModel = [[GatewayGiftIncoming alloc] init];
+                giftModel.uid = uid;
+                giftModel.giftId = giftId;
+                giftModel.nickname = name;
+                giftModel.portrait = name;
+                giftModel.comboId = uid + giftId + 100;//为了保证唯一性
+                [_randomModelArray addObject:giftModel];
+            }
+        }
+    }
+    return _randomModelArray;
+}
+
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    NSMutableArray * personArray = self.randomPersonArray;
-    int randomValue = arc4random();
-    
-    int uid = randomValue % personArray.count;      //uid 0／陈赫 1／邓超 2/鹿晗
-    int giftId = arc4random() % personArray.count;   //随机礼物id
-    NSString * name = personArray[uid][@"name"];
-    GatewayGiftIncoming * giftModel = [[GatewayGiftIncoming alloc] init];
-    giftModel.uid = uid;
-    giftModel.giftId = giftId;
-    giftModel.nickname = name;
-    giftModel.portrait = name;
-    
+    int index = arc4random() % self.randomModelArray.count;
+    NSLog(@"%d",index);
+    GatewayGiftIncoming * giftModel = self.randomModelArray[index];
     int combo = [self getRandomComboWithGiftModel:giftModel];
     giftModel.combo = combo;//连击数
-    giftModel.comboId = uid + giftId + 100;//为了保证唯一性 
-    
-    giftModel.comboId += 10;
     [self dealOthersSend:giftModel];
 }
 
@@ -120,15 +132,18 @@
     array[uid][@"combo"] = comboArray;
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setRandomArrayZero:) object:model];
-    [self performSelector:@selector(setRandomArrayZero:) withObject:model afterDelay:kLYgiftStayDistance];
+    [self performSelector:@selector(setRandomArrayZero:) withObject:model afterDelay:kLYGiftStayDistance];
     return [combo intValue];
 }
 
 - (void)setRandomArrayZero:(GatewayGiftIncoming *)model
 {
     NSMutableArray * array = self.randomPersonArray;
-    NSNumber * combo = array[model.uid][@"combo"][model.giftId];
+    NSMutableArray * comboArray = array[model.uid][@"combo"];
+    NSNumber * combo = comboArray[model.giftId];
     combo = @(0);
+    comboArray[model.giftId] = combo;
+    array[model.uid][@"combo"] = comboArray;
 }
 
 
@@ -152,7 +167,7 @@
     self.comboArray[tag] = @(value +1);
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setComboZero:) object:sender];
-    [self performSelector:@selector(setComboZero:) withObject:sender afterDelay:kLYgiftStayDistance];
+    [self performSelector:@selector(setComboZero:) withObject:sender afterDelay:kLYGiftStayDistance];
     return [self.comboArray[tag] intValue];
 }
 
@@ -168,21 +183,6 @@
         _comboArray = @[@0,@0,@0,@0,@0,@0].mutableCopy;
     }
     return _comboArray;
-}
-
-// 收到服务器发送的礼物
-- (void)showSmallGiftWithGiftDictionary:(GatewayGiftIncoming *)sendGiftInfo{
-    // 自己发的礼物（优先显示）
-    if (sendGiftInfo.uid == kLYUid) {
-        // 处理本地的，服务器返回的过滤掉
-        if (sendGiftInfo.localTime) {
-            [self dealSelfSend:sendGiftInfo];
-        }
-    }
-    // 别人发的礼物
-    else {
-        [self dealOthersSend:sendGiftInfo];
-    }
 }
 
 // 处理自己发送的礼物
@@ -278,38 +278,6 @@
     return combArray;
 }
 
-// 自己发的礼物
-- (void)sendFakeGift:(int)gid
-{
-    GatewayGiftIncoming *gift = [GatewayGiftIncoming new];
-    static GatewayGiftIncoming *gLastGift = nil;
-    BOOL expired = NO;
-    if (!gLastGift) {
-        gift.comboId = -1;
-        expired = YES;
-    }
-    else {
-        if (gid != gLastGift.giftId) {
-            expired = YES;
-        }
-        else {
-            if (gift.localTime - gLastGift.localTime >= 3.0) {
-                expired = YES;
-            }
-        }
-    }
-    if (expired) {
-        gift.combo = 1;
-        gift.comboId = gLastGift.comboId-1;
-    }
-    else {
-        gift.combo = gLastGift.combo + 1;
-        gift.comboId = gLastGift.comboId;
-    }
-    
-    [self showSmallGiftWithGiftDictionary:gift];
-    gLastGift = gift;
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

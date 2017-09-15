@@ -126,7 +126,7 @@
     
     // 创建新的定时器，显示3秒消失
     @weakify(self);
-    _timer = [NSTimer eoc_scheduledTimerWithTimeInterval:kLYgiftStayDistance block:^{
+    _timer = [NSTimer eoc_scheduledTimerWithTimeInterval:kLYGiftStayDistance block:^{
         @strongify(self);
         [self expired];
     } repeats:NO];

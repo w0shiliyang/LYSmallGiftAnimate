@@ -21,9 +21,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="美女截图2" translatesAutoresizingMaskIntoConstraints="NO" id="1dA-Z6-MOk">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
                             <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="02E-0a-D8u">
-                                <rect key="frame" x="86" y="586" width="60" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="97" y="586" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" red="0.9018782383419689" green="0.9018782383419689" blue="0.9018782383419689" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="红酒">
                                     <color key="titleColor" red="0.39177865932642486" green="0.39177865932642486" blue="0.39177865932642486" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -32,9 +36,20 @@
                                     <action selector="sendGiftAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cty-FF-Rk8"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9v0-y1-7lZ">
+                                <rect key="frame" x="193" y="586" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" red="0.90187823830000002" green="0.90187823830000002" blue="0.90187823830000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" image="啤酒">
+                                    <color key="titleColor" red="0.3917786593" green="0.3917786593" blue="0.3917786593" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="sendGiftAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yeh-Ll-B9S"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VqI-cr-QvC">
-                                <rect key="frame" x="262" y="587" width="60" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="289" y="586" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" red="0.90187823830000002" green="0.90187823830000002" blue="0.90187823830000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="星巴克咖啡">
                                     <color key="titleColor" red="0.3917786593" green="0.3917786593" blue="0.3917786593" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -44,8 +59,8 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LZS-9c-cQw">
-                                <rect key="frame" x="86" y="510" width="60" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="97" y="489" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" red="0.90187823830000002" green="0.90187823830000002" blue="0.90187823830000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="红酒">
                                     <color key="titleColor" red="0.3917786593" green="0.3917786593" blue="0.3917786593" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -55,8 +70,8 @@
                                 </connections>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P9B-7E-04c">
-                                <rect key="frame" x="179" y="510" width="60" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="193" y="489" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" red="0.90187823830000002" green="0.90187823830000002" blue="0.90187823830000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="啤酒">
                                     <color key="titleColor" red="0.3917786593" green="0.3917786593" blue="0.3917786593" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -66,8 +81,8 @@
                                 </connections>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qV4-OE-PbV">
-                                <rect key="frame" x="262" y="510" width="60" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="289" y="489" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" red="0.90187823830000002" green="0.90187823830000002" blue="0.90187823830000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="星巴克咖啡">
                                     <color key="titleColor" red="0.3917786593" green="0.3917786593" blue="0.3917786593" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -76,38 +91,27 @@
                                     <action selector="sendGiftAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="EOl-rL-8cK"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Baby：" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fpC-ro-b4r">
-                                <rect key="frame" x="16" y="586" width="62" height="61"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" red="1" green="0.41579367334425565" blue="0.65063778061122968" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="点击屏幕为明星发送的礼物" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ado-ch-Ysa">
+                                <rect key="frame" x="7" y="20" width="352" height="71"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <color key="textColor" red="0.8762356346441369" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="我：" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YTv-5l-aD6">
-                                <rect key="frame" x="16" y="510" width="62" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" red="0.0" green="0.14433013756816804" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="我：" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WgZ-T1-5JP">
+                                <rect key="frame" x="7" y="524" width="92" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" red="1" green="0.95570289730744551" blue="0.010219405410217264" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="点击屏幕为随机人发送的礼物" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ado-ch-Ysa">
-                                <rect key="frame" x="-3" y="28" width="378" height="58"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="0.49620990071493132" blue="0.46814144775813282" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="baby：" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imZ-7t-1sQ">
+                                <rect key="frame" x="0.0" y="611" width="99" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" red="1" green="0.95570289730000002" blue="0.01021940541" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9v0-y1-7lZ">
-                                <rect key="frame" x="179" y="586" width="60" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.90187823830000002" green="0.90187823830000002" blue="0.90187823830000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" image="啤酒">
-                                    <color key="titleColor" red="0.3917786593" green="0.3917786593" blue="0.3917786593" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="sendGiftAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yeh-Ll-B9S"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -121,5 +125,6 @@
         <image name="啤酒" width="45" height="89"/>
         <image name="星巴克咖啡" width="43" height="63"/>
         <image name="红酒" width="128" height="128"/>
+        <image name="美女截图2" width="621" height="1104"/>
     </resources>
 </document>
