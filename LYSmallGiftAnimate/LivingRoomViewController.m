@@ -16,10 +16,12 @@
 @property (strong ,nonatomic) NSMutableArray *comboArray;
 @property (strong ,nonatomic) NSMutableArray *randomPersonArray;
 @property (strong ,nonatomic) NSMutableArray <GatewayGiftIncoming *>*randomModelArray;
+
 // 礼物
 @property (nonatomic, strong) NSMutableArray *giftQueue; // 收到礼物的队列（按combid分类的二维数组）
 @property (nonatomic, strong) NSArray *giftAnimatedViews; // 礼物动画显示区域
 
+@property (strong ,nonatomic) NSOperationQueue *operationQueue;     //队列
 @end
 
 @implementation LivingRoomViewController
@@ -33,6 +35,8 @@
 - (void)initGiftView
 {
     _giftQueue = [NSMutableArray new];
+    _operationQueue = [[NSOperationQueue alloc]init];
+    _operationQueue.maxConcurrentOperationCount = 1;
     
     NSMutableArray *giftViews = [NSMutableArray new];
     CGFloat y = self.view.bounds.size.height - 410;
@@ -53,26 +57,29 @@
 
 //送礼物
 - (IBAction)sendGiftAction:(UIButton *)sender {
-    
-    NSInteger tag = sender.tag;
-    GatewayGiftIncoming * giftModel = [[GatewayGiftIncoming alloc] init];
-    int combo = [self comboNumberWithButton:sender];//连击数
-    giftModel.combo = combo;
-    giftModel.giftId = (int)tag % kLYGiftCount;
-    giftModel.comboId = (int)tag % kLYGiftCount+10;
-    if (tag < kLYGiftCount) {
-        //自己发的
-        giftModel.nickname = @"我";
-        giftModel.portrait = @"我";
-        giftModel.uid = kLYUid;
-        [self dealSelfSend:giftModel];
-    }else{
-        giftModel.comboId += 10;
-        giftModel.uid = 250;
-        giftModel.nickname = @"baby";
-        giftModel.portrait = @"baby";
-        [self dealOthersSend:giftModel];
-    }
+    NSBlockOperation * blockOperation = [NSBlockOperation blockOperationWithBlock:^{
+        NSLog(@"%@",[NSThread currentThread]);
+        NSInteger tag = sender.tag;
+        GatewayGiftIncoming * giftModel = [[GatewayGiftIncoming alloc] init];
+        int combo = [self comboNumberWithButton:sender];//连击数
+        giftModel.combo = combo;
+        giftModel.giftId = (int)tag % kLYGiftCount;
+        giftModel.comboId = (int)tag % kLYGiftCount+10;
+        if (tag < kLYGiftCount) {
+            //自己发的
+            giftModel.nickname = @"我";
+            giftModel.portrait = @"我";
+            giftModel.uid = kLYUid;
+            [self dealSelfSend:giftModel];
+        }else{
+            giftModel.comboId += 10;
+            giftModel.uid = 250;
+            giftModel.nickname = @"baby";
+            giftModel.portrait = @"baby";
+            [self dealOthersSend:giftModel];
+        }
+    }];
+    [self.operationQueue addOperation:blockOperation];
 }
 
 - (NSMutableArray *)randomPersonArray {
@@ -112,12 +119,16 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    int index = arc4random() % self.randomModelArray.count;
-    NSLog(@"%d",index);
-    GatewayGiftIncoming * giftModel = self.randomModelArray[index];
-    int combo = [self getRandomComboWithGiftModel:giftModel];
-    giftModel.combo = combo;//连击数
+    NSBlockOperation * blockOperation = [NSBlockOperation blockOperationWithBlock:^{
+        NSLog(@"%@",[NSThread currentThread]);
+        int index = arc4random() % self.randomModelArray.count;
+        NSLog(@"%d",index);
+        GatewayGiftIncoming * giftModel = self.randomModelArray[index];
+        int combo = [self getRandomComboWithGiftModel:giftModel];
+        giftModel.combo = combo;//连击数
     [self dealOthersSend:giftModel];
+    }];
+    [self.operationQueue addOperation:blockOperation];
 }
 
 - (int)getRandomComboWithGiftModel:(GatewayGiftIncoming *)model
@@ -131,8 +142,11 @@
     comboArray[giftId] = combo;
     array[uid][@"combo"] = comboArray;
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setRandomArrayZero:) object:model];
-    [self performSelector:@selector(setRandomArrayZero:) withObject:model afterDelay:kLYGiftStayDistance];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setRandomArrayZero:) object:model];
+        [self performSelector:@selector(setRandomArrayZero:) withObject:model afterDelay:kLYGiftStayDistance];
+    });
+    
     return [combo intValue];
 }
 
@@ -165,9 +179,10 @@
     NSInteger tag = sender.tag;
     int value = [(NSNumber *)self.comboArray[tag] intValue];
     self.comboArray[tag] = @(value +1);
-    
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setComboZero:) object:sender];
-    [self performSelector:@selector(setComboZero:) withObject:sender afterDelay:kLYGiftStayDistance];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(setComboZero:) object:sender];
+        [self performSelector:@selector(setComboZero:) withObject:sender afterDelay:kLYGiftStayDistance];
+    });
     return [self.comboArray[tag] intValue];
 }
 
@@ -218,8 +233,8 @@
             [self dealSelfSend:sendGiftInfo];
         }
     }
-    
 }
+
 
 // 处理别人发送的礼物
 - (void)dealOthersSend:(GatewayGiftIncoming *)sendGiftInfo

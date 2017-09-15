@@ -118,27 +118,29 @@
 
 - (void)startComb:(BOOL)isComb
 {
-    // 取消之前定时器
-    if (_timer) {
-        [_timer invalidate];
-        _timer = nil;
-    }
-    
-    // 创建新的定时器，显示3秒消失
-    @weakify(self);
-    _timer = [NSTimer eoc_scheduledTimerWithTimeInterval:kLYGiftStayDistance block:^{
-        @strongify(self);
-        [self expired];
-    } repeats:NO];
-    
-    if (isComb) {
-        // 开始连击动画
-        [self combAnimated];
-    }
-    else {
-        // 开始显示动画
-        [self showAnimated];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // 取消之前定时器
+        if (_timer) {
+            [_timer invalidate];
+            _timer = nil;
+        }
+        
+        // 创建新的定时器，显示3秒消失
+        @weakify(self);
+        _timer = [NSTimer eoc_scheduledTimerWithTimeInterval:kLYGiftStayDistance block:^{
+            @strongify(self);
+            [self expired];
+        } repeats:NO];
+        
+        if (isComb) {
+            // 开始连击动画
+            [self combAnimated];
+        }
+        else {
+            // 开始显示动画
+            [self showAnimated];
+        }
+    });
 }
 
 - (void)expired
