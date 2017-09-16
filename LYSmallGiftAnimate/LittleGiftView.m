@@ -31,36 +31,16 @@
     [_timer invalidate];
 }
 
-- (BOOL)checkGift:(GatewayGiftIncoming *)gift
+- (BOOL)checkIsFirstShowGift:(GatewayGiftIncoming *)gift
 {
-    BOOL accept = NO; // 是否接受
-    BOOL isComb = YES;  // 是否连击
+    BOOL accept = NO;   // 是否接受
     
-    // _comboList == nil 表示连击已经结束
     if (_comboList == nil) {
+        //列表为空，可以接受礼物
         _comboList = [NSMutableArray new];
-        isComb = NO;
-    }
-    
-    // 如果连击已经结束
-    if (isComb == NO) {
-        [_comboList addObject:gift];
-        _comboId = gift.comboId;
-        _uid = gift.uid;
         accept = YES;
-    }
-    // 如果连击没有结束
-    else {
-        // 判断ID是否相同
-        if (gift.comboId && gift.comboId == self.comboId) {
-            [_comboList addObject:gift];
-            accept = YES;
-        }
-    }
-    
-    // 如果可以接受
-    if (accept) {
-        [self startComb:isComb];
+        [_comboList addObject:gift];
+        [self startComb:NO];
     }
     
     return accept;
@@ -100,6 +80,8 @@
 - (void)translateCombList:(NSMutableArray *)combList
 {
     _comboList = combList;
+    GatewayGiftIncoming * giftModel = _comboList.firstObject;
+    _uid = giftModel.uid;
     [self startComb:NO];
 }
 
@@ -109,8 +91,8 @@
         POPSpringAnimation *anim = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerScaleXY];
         anim.fromValue = [NSValue valueWithCGPoint:CGPointMake(2.0f, 2.0)];
         anim.toValue = [NSValue valueWithCGPoint:CGPointMake(1.0, 1.0)];
-        anim.springBounciness = 25.0;
-        anim.springSpeed = 25.0;
+        anim.springBounciness = 15.0;   //反弹力
+        anim.springSpeed = 25.0;        //加速度
         _giftComboAnimation = anim;
     }
     return _giftComboAnimation;
@@ -145,7 +127,6 @@
 
 - (void)expired
 {
-//    NSLog(@"连击失效--%lld", _comboId);
     [_combLabel.layer pop_removeAllAnimations];
     [self.layer removeAllAnimations];
     
@@ -154,6 +135,7 @@
 
 - (void)clearQueue
 {
+    
     _comboList = nil;    // 失效清空连击队列
     _inComb = NO;
     _comboId = 0;
@@ -163,11 +145,12 @@
 - (void)combAnimated
 {
 
-//    if (self.inComb) {
-//        return;
-//    }
-//    
+    if (self.inComb) {
+        return;
+    }
+
     GatewayGiftIncoming *gift = self.comboList.firstObject;
+    
     if (!gift) {
         return;
     }
@@ -177,16 +160,13 @@
     [self.comboList removeObjectAtIndex:0];
     [self.combLabel setText:[NSString stringWithFormat:@"X %d", MAX(gift.combo, 1)]];
     
-//    NSLog(@"连击动画--%lld", _comboId);
-    
     POPSpringAnimation *anim = self.giftComboAnimation;
     @weakify(self);
     anim.completionBlock = ^(POPAnimation *anim, BOOL finished) {
         @strongify(self);
         if (finished) {
             [self setInComb:NO];
-//            NSLog(@"连击结束--%lld", _comboId);
-//            [self startComb:YES];
+            [self startComb:YES];
         }};
     [_combLabel.layer pop_addAnimation:anim forKey:@"LYComb"];
 }
@@ -198,14 +178,14 @@
         return;
     }
     
+    _comboId = gift.comboId;
+    _uid = gift.uid;
     [self.portraitImageView setImage:[UIImage imageNamed:gift.portrait]];
     [self.nicknameLabel setText:gift.nickname];
     
     LiveGiftModel *giftInfo = [LiveGiftModel giftImageOfId:gift.giftId];
     [self.giftImageView setImage:[UIImage imageNamed:giftInfo.icon]];
     [self.sendLabel setText:[NSString stringWithFormat:@"送出了, %@", giftInfo.name]];
-    
-//    NSLog(@"礼物显示--%lld", _comboId);
 
     [_combLabel.layer pop_removeAllAnimations];
 
@@ -224,8 +204,6 @@
 
 - (void)dismissAnimated
 {
-//    NSLog(@"礼物消失--%lld", _comboId);
-
     @weakify(self);
     [UIView animateWithDuration:kLYGiftDismissDuration animations:^{
         @strongify(self);
@@ -233,7 +211,9 @@
         [self setAlpha:0.0f];
     } completion:^(BOOL finished) {
         [self clearQueue];
-        [self.delegate needUpdateLittleGiftView:self];
+        if (self.delegate) {
+            [self.delegate needUpdateLittleGiftView:self];
+        }
     }];
 }
 

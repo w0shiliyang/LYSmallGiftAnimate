@@ -58,7 +58,6 @@
 //送礼物
 - (IBAction)sendGiftAction:(UIButton *)sender {
     NSBlockOperation * blockOperation = [NSBlockOperation blockOperationWithBlock:^{
-        NSLog(@"%@",[NSThread currentThread]);
         NSInteger tag = sender.tag;
         GatewayGiftIncoming * giftModel = [[GatewayGiftIncoming alloc] init];
         int combo = [self comboNumberWithButton:sender];//连击数
@@ -120,13 +119,11 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     NSBlockOperation * blockOperation = [NSBlockOperation blockOperationWithBlock:^{
-        NSLog(@"%@",[NSThread currentThread]);
         int index = arc4random() % self.randomModelArray.count;
-        NSLog(@"%d",index);
         GatewayGiftIncoming * giftModel = self.randomModelArray[index];
         int combo = [self getRandomComboWithGiftModel:giftModel];
         giftModel.combo = combo;//连击数
-    [self dealOthersSend:giftModel];
+        [self dealOthersSend:giftModel];
     }];
     [self.operationQueue addOperation:blockOperation];
 }
@@ -200,34 +197,50 @@
     return _comboArray;
 }
 
+- (BOOL)canShow
+{
+    return self.giftQueue.count <= 0;
+}
+
 // 处理自己发送的礼物
 - (void)dealSelfSend:(GatewayGiftIncoming *)sendGiftInfo
 {
+    //连击的优先显示
     BOOL isCombo = [self checkCombo:sendGiftInfo];
     if (isCombo) {
+        NSLog(@"连击");
         return;
     }
-    
+    //检查当先显示的能否接受
     BOOL accept = [self findAvailablePlayView:sendGiftInfo];
     if (!accept) {
         // 检查是否有显示位置可以被抢占
         NSMutableArray *tokeoverList = nil;
-        for (LittleGiftView *giftView in self.giftAnimatedViews) {
+        for (int i = 0 ; i < 2; i++) {
+            LittleGiftView * giftView = self.giftAnimatedViews[i];
             tokeoverList = [giftView checkTakeOver];
             if (tokeoverList) {
                 break;
             }
         }
+//        for (LittleGiftView *giftView in self.giftAnimatedViews) {
+//            tokeoverList = [giftView checkTakeOver];
+//            if (tokeoverList) {
+//                break;
+//            }
+//        }
         if (!tokeoverList) {
+            NSLog(@"排队");
             // 如果不能抢占显示位，插入队首
             NSMutableArray *combArray = [self findCombArrayOfGift:sendGiftInfo];
             if (!combArray) {
                 combArray = [NSMutableArray new];
                 [_giftQueue insertObject:combArray atIndex:0];
             }
-            [combArray insertObject:sendGiftInfo atIndex:0];
+            [combArray addObject:sendGiftInfo];
         }
         else {
+            NSLog(@"抢占");
             // 如果能抢占
             [_giftQueue insertObject:tokeoverList atIndex:0];
             [self dealSelfSend:sendGiftInfo];
@@ -239,6 +252,10 @@
 // 处理别人发送的礼物
 - (void)dealOthersSend:(GatewayGiftIncoming *)sendGiftInfo
 {
+    BOOL isCombo = [self checkCombo:sendGiftInfo];
+    if (isCombo) {
+        return;
+    }
     BOOL accept = [self findAvailablePlayView:sendGiftInfo];
     // 如果不能在显示位插入，则插入队尾。
     if (!accept) {
@@ -247,7 +264,7 @@
             combArray = [NSMutableArray new];
             [_giftQueue addObject:combArray];
         }
-        [combArray insertObject:sendGiftInfo atIndex:0];
+        [combArray addObject:sendGiftInfo];
     }
 }
 
@@ -256,7 +273,7 @@
 {
     BOOL accept = NO;
     for (LittleGiftView *giftView in self.giftAnimatedViews) {
-        accept = [giftView checkGift:gift];
+        accept = [giftView checkIsFirstShowGift:gift];
         if (accept) {
             return YES;
         }
