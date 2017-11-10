@@ -9,7 +9,7 @@ demo特点：
 
 ### 图片效果演示
 
-![图片效果演示](https://github.com/w0shiliyang/LYSmallGiftAnimate/blob/master/截图.jpg)
+![图片效果演示](https://github.com/w0shiliyang/LYSmallGiftAnimate/blob/master/截图.png)
 
 # Contact me
 - Weibo: [@李洋](http://weibo.com/3297900977)
