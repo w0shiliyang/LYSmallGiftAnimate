@@ -12,40 +12,40 @@
 #import "AllModel.h"
 
 @class LittleGiftView;
-@protocol LittleGiftViewDelegate
+
+@protocol LittleGiftViewDelegate <NSObject>
 
 //获取新的数据
 - (void)needUpdateLittleGiftView:(LittleGiftView *)giftView;
 
 @end
 
-
 @interface LittleGiftView : UIView
 
-@property (weak, nonatomic) IBOutlet UIImageView *portraitImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *giftImageView;
-@property (weak, nonatomic) IBOutlet UILabel *sendLabel;
-@property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
-@property (weak, nonatomic) IBOutlet GYLabel *combLabel;
-
+/**
+ 连击ID
+ */
 @property (nonatomic, readonly) long long comboId;
+
+/**
+ 用户ID 用于区分是否是自己送的
+ */
 @property (nonatomic, readonly) long long uid;
 
-//检查是否可以连击显示
+@property (nonatomic, weak) id <LittleGiftViewDelegate> delegate;
+
+
+//检查是否可以连击显示 可以则处理
 - (BOOL)checkIsComboGift:(GatewayGiftIncoming *)gift;
 
-//检查是否空闲，空闲默认显示出来
+//检查是否空闲，空闲显示出来
 - (BOOL)checkIsFirstShowGift:(GatewayGiftIncoming *)gift;
 
 /**
  检查能否抢占
  
- @return 当前连击列表
+ @return 抢占成功，返回顶替的数据，未能抢占成功（都是自己发的）返回gift
  */
-- (NSMutableArray *)checkTakeOver;
-
-- (void)translateCombList:(NSMutableArray *)combList;
-
-@property (nonatomic, weak) id <LittleGiftViewDelegate> delegate;
+- (GatewayGiftIncoming *)checkTakeOver:(GatewayGiftIncoming *)gift;
 
 @end

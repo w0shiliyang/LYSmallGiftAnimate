@@ -13,9 +13,11 @@
 
 @property (nonatomic, copy) NSString *nickname;
 @property (nonatomic, copy) NSString *portrait;
-@property (nonatomic, assign) int combo;//连击数
+@property (nonatomic, assign) int combo;        //连击数
+@property (nonatomic, assign) int firstCombo;   //第一次显示的连击数
+@property (assign ,nonatomic) BOOL needShowFirstCombo;
 @property (nonatomic, assign) long long comboId;//每个人送的每个礼物的comboId不同
-@property (nonatomic, assign) int giftId;//礼物id
+@property (nonatomic, assign) int giftId;       //礼物id
 @property (nonatomic, assign) int level;
 @property (nonatomic, assign) long long roomId;
 @property (nonatomic, assign) long long toUid;
@@ -25,6 +27,7 @@
 @property (nonatomic, assign) double localTime;
 
 + (instancetype)giftWithCombo:(int)comb giftId:(int)giftId comboId:(int)comboId nickname:(NSString *)nickname portrait:(NSString *)portrait uid:(long long)uid;
+
 @end
 
 @interface LiveGiftModel : NSObject

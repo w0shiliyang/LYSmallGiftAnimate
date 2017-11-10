@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LivingRoomViewController : UIViewController
+@interface ViewController : UIViewController
 
 @end
 

@@ -10,7 +10,7 @@
 		199888434D0C34D26C11451B /* libPods-LYSmallGiftAnimate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2247F705578CF6B7C2EAF828 /* libPods-LYSmallGiftAnimate.a */; };
 		B61CE8F91F6A637C0012B26F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE8F81F6A637C0012B26F /* main.m */; };
 		B61CE8FC1F6A637C0012B26F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE8FB1F6A637C0012B26F /* AppDelegate.m */; };
-		B61CE8FF1F6A637C0012B26F /* LivingRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE8FE1F6A637C0012B26F /* LivingRoomViewController.m */; };
+		B61CE8FF1F6A637C0012B26F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE8FE1F6A637C0012B26F /* ViewController.m */; };
 		B61CE9021F6A637C0012B26F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B61CE9001F6A637C0012B26F /* Main.storyboard */; };
 		B61CE9041F6A637C0012B26F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B61CE9031F6A637C0012B26F /* Assets.xcassets */; };
 		B61CE9071F6A637C0012B26F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B61CE9051F6A637C0012B26F /* LaunchScreen.storyboard */; };
@@ -19,6 +19,7 @@
 		B61CE9151F6A65490012B26F /* GYLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE9141F6A65490012B26F /* GYLabel.m */; };
 		B61CE9181F6A65700012B26F /* AllModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE9171F6A65700012B26F /* AllModel.m */; };
 		B61CE91B1F6A66950012B26F /* NSTimer+EOCBlocksSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = B61CE91A1F6A66950012B26F /* NSTimer+EOCBlocksSupport.m */; };
+		B6EC34711FB54103009CEEB0 /* UIButton+ConboClick.m in Sources */ = {isa = PBXBuildFile; fileRef = B6EC34701FB54103009CEEB0 /* UIButton+ConboClick.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,8 +30,8 @@
 		B61CE8F81F6A637C0012B26F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B61CE8FA1F6A637C0012B26F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B61CE8FB1F6A637C0012B26F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		B61CE8FD1F6A637C0012B26F /* LivingRoomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LivingRoomViewController.h; sourceTree = "<group>"; };
-		B61CE8FE1F6A637C0012B26F /* LivingRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LivingRoomViewController.m; sourceTree = "<group>"; };
+		B61CE8FD1F6A637C0012B26F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		B61CE8FE1F6A637C0012B26F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		B61CE9011F6A637C0012B26F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B61CE9031F6A637C0012B26F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B61CE9061F6A637C0012B26F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -45,6 +46,8 @@
 		B61CE9191F6A66950012B26F /* NSTimer+EOCBlocksSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+EOCBlocksSupport.h"; sourceTree = "<group>"; };
 		B61CE91A1F6A66950012B26F /* NSTimer+EOCBlocksSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+EOCBlocksSupport.m"; sourceTree = "<group>"; };
 		B61CE91F1F6A6BCE0012B26F /* LYConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYConfig.h; sourceTree = "<group>"; };
+		B6EC346F1FB54103009CEEB0 /* UIButton+ConboClick.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+ConboClick.h"; sourceTree = "<group>"; };
+		B6EC34701FB54103009CEEB0 /* UIButton+ConboClick.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+ConboClick.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,8 +93,10 @@
 			children = (
 				B61CE8FA1F6A637C0012B26F /* AppDelegate.h */,
 				B61CE8FB1F6A637C0012B26F /* AppDelegate.m */,
-				B61CE8FD1F6A637C0012B26F /* LivingRoomViewController.h */,
-				B61CE8FE1F6A637C0012B26F /* LivingRoomViewController.m */,
+				B61CE8FD1F6A637C0012B26F /* ViewController.h */,
+				B61CE8FE1F6A637C0012B26F /* ViewController.m */,
+				B6EC346F1FB54103009CEEB0 /* UIButton+ConboClick.h */,
+				B6EC34701FB54103009CEEB0 /* UIButton+ConboClick.m */,
 				B61CE90E1F6A63AB0012B26F /* LittleGiftView.h */,
 				B61CE90F1F6A63AB0012B26F /* LittleGiftView.m */,
 				B61CE9101F6A63AB0012B26F /* LittleGiftView.xib */,
@@ -255,7 +260,8 @@
 				B61CE91B1F6A66950012B26F /* NSTimer+EOCBlocksSupport.m in Sources */,
 				B61CE9151F6A65490012B26F /* GYLabel.m in Sources */,
 				B61CE9181F6A65700012B26F /* AllModel.m in Sources */,
-				B61CE8FF1F6A637C0012B26F /* LivingRoomViewController.m in Sources */,
+				B61CE8FF1F6A637C0012B26F /* ViewController.m in Sources */,
+				B6EC34711FB54103009CEEB0 /* UIButton+ConboClick.m in Sources */,
 				B61CE8FC1F6A637C0012B26F /* AppDelegate.m in Sources */,
 				B61CE9111F6A63AB0012B26F /* LittleGiftView.m in Sources */,
 				B61CE8F91F6A637C0012B26F /* main.m in Sources */,

@@ -11,14 +11,22 @@
 #import <POP.h>
 #import <EXTScope.h>
 #import "LYConfig.h"
+#import "UIButton+ConboClick.h"
 
-#define kLYGiftShowDuration 0.3f
-#define kLYGiftDismissDuration 0.3f
+static CGFloat giftShowDuration = 0.3f;
+static CGFloat giftDismissDuration = 0.3f;
 
 @interface LittleGiftView()
+//UI
+@property (weak, nonatomic) IBOutlet UIImageView *portraitImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *giftImageView;
+@property (weak, nonatomic) IBOutlet UILabel *sendLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nicknameLabel;
+@property (weak, nonatomic) IBOutlet GYLabel *combLabel;
 
+@property (nonatomic, assign) int combo;    //连击数
 @property (nonatomic, strong) NSTimer *timer;
-@property (nonatomic, strong) NSMutableArray *comboList;
+@property (strong ,nonatomic) GatewayGiftIncoming *giftModel;
 @property (nonatomic, assign) BOOL inComb;
 @property (nonatomic, strong) POPSpringAnimation *giftComboAnimation;
 
@@ -34,55 +42,43 @@
 - (BOOL)checkIsFirstShowGift:(GatewayGiftIncoming *)gift
 {
     BOOL accept = NO;   // 是否接受
-    
-    if (_comboList == nil) {
-        //列表为空，可以接受礼物
-        _comboList = [NSMutableArray new];
+    if (_giftModel == nil) {
+        //当前未显示，可以接受礼物
         accept = YES;
-        [_comboList addObject:gift];
+        _giftModel = gift;
         [self startComb:NO];
     }
-    
     return accept;
 }
 
 - (BOOL)checkIsComboGift:(GatewayGiftIncoming *)gift
 {
     BOOL isComb = NO;  // 是否连击
-    
-    // 判断ID是否相同
-    if (gift.comboId && gift.comboId == self.comboId) {
-        [_comboList addObject:gift];
+    if (_giftModel.comboId == gift.comboId) {
+        //是相同的ID，可以接受礼物
         isComb = YES;
-    }
-    
-    // 如果连击
-    if (isComb) {
-        [self startComb:isComb];
+        if (gift.combo > self.giftModel.combo) {
+            _giftModel.combo = gift.combo;
+        }
+        [self startComb:YES];
     }
     
     return isComb;
 }
 
-
-- (NSMutableArray *)checkTakeOver
+- (GatewayGiftIncoming *)checkTakeOver:(GatewayGiftIncoming *)gift
 {
-    if (self.comboList) {
+    if (self.giftModel) {
         if (_uid != kLYUid) {
-            NSMutableArray *comboList = self.comboList;
-            [self clearQueue];
-            return comboList;
+            GatewayGiftIncoming * giftModel = self.giftModel;
+            [self clear];
+            [self checkIsFirstShowGift:gift];
+            giftModel.needShowFirstCombo = YES;
+            giftModel.firstCombo = giftModel.combo;
+            return giftModel;
         }
     }
-    return nil;
-}
-
-- (void)translateCombList:(NSMutableArray *)combList
-{
-    _comboList = combList;
-    GatewayGiftIncoming * giftModel = _comboList.firstObject;
-    _uid = giftModel.uid;
-    [self startComb:NO];
+    return gift;
 }
 
 - (POPSpringAnimation *)giftComboAnimation
@@ -109,7 +105,7 @@
         
         // 创建新的定时器，显示3秒消失
         @weakify(self);
-        _timer = [NSTimer eoc_scheduledTimerWithTimeInterval:kLYGiftStayDistance block:^{
+        _timer = [NSTimer eoc_scheduledTimerWithTimeInterval:comboMaxTime block:^{
             @strongify(self);
             [self expired];
         } repeats:NO];
@@ -129,36 +125,37 @@
 {
     [_combLabel.layer pop_removeAllAnimations];
     [self.layer removeAllAnimations];
-    
     [self dismissAnimated];
 }
 
-- (void)clearQueue
+- (void)clear
 {
-    
-    _comboList = nil;    // 失效清空连击队列
     _inComb = NO;
-    _comboId = 0;
+    _combo = 0;
     _uid = 0;
+    _giftModel= nil;
 }
 
 - (void)combAnimated
 {
-
     if (self.inComb) {
         return;
     }
-
-    GatewayGiftIncoming *gift = self.comboList.firstObject;
-    
+    GatewayGiftIncoming *gift = self.giftModel;
     if (!gift) {
         return;
     }
-
+    if (gift.needShowFirstCombo) {
+        gift.needShowFirstCombo = NO;
+        self.combo = gift.firstCombo-1;
+    }
+    else if (self.combo >= self.giftModel.combo) {
+        return;
+    }    
+    self.combo++;
     [self setInComb:YES];
     [_combLabel.layer pop_removeAllAnimations];
-    [self.comboList removeObjectAtIndex:0];
-    [self.combLabel setText:[NSString stringWithFormat:@"X %d", MAX(gift.combo, 1)]];
+    [self.combLabel setText:[NSString stringWithFormat:@"X %d", MAX(self.combo, 1)]];
     
     POPSpringAnimation *anim = self.giftComboAnimation;
     @weakify(self);
@@ -173,7 +170,7 @@
 
 - (void)showAnimated
 {
-    GatewayGiftIncoming *gift = self.comboList.firstObject;
+    GatewayGiftIncoming *gift = self.giftModel;
     if (!gift) {
         return;
     }
@@ -192,7 +189,7 @@
     [self setTransform:CGAffineTransformMakeTranslation(-self.bounds.size.width, 0.0f)];
     [self setAlpha:0.0f];
     @weakify(self);
-    [UIView animateWithDuration:kLYGiftShowDuration animations:^{
+    [UIView animateWithDuration:giftShowDuration animations:^{
         @strongify(self);
         [self setTransform:CGAffineTransformIdentity];
         [self setAlpha:1.0f];
@@ -205,13 +202,13 @@
 - (void)dismissAnimated
 {
     @weakify(self);
-    [UIView animateWithDuration:kLYGiftDismissDuration animations:^{
+    [UIView animateWithDuration:giftDismissDuration animations:^{
         @strongify(self);
         [self setTransform:CGAffineTransformMakeTranslation(0.0f, -self.bounds.size.height)];
         [self setAlpha:0.0f];
     } completion:^(BOOL finished) {
-        [self clearQueue];
-        if (self.delegate) {
+        [self clear];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(needUpdateLittleGiftView:)]) {
             [self.delegate needUpdateLittleGiftView:self];
         }
     }];
